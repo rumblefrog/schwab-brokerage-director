@@ -12,4 +12,7 @@ __pycache__/
 /build/
 /dist/
 
+# Local fixture-based dry-run output — real weekly recommendations do get committed.
+recommendations/DRY-RUN.md
+
 .DS_Store

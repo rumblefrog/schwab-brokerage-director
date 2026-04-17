@@ -40,11 +40,11 @@ $500.00 (~1.43 shares of VTI at $350.37).
 
 | Category          | Current % | Target % | Drift $     |
 |-------------------|-----------|----------|-------------|
-| us_equity_broad   | 52.7%     | 55.0%    | −$2,757 ↓   |
-| us_equity_growth  |  5.8%     |  7.0%    | −$1,470 ↓   |
-| intl_equity       | 21.0%     | 22.0%    | −$1,229 ↓   |
-| precious_metals   | 10.9%     |  9.0%    | +$2,252 ↑   |
-| cash_dry_powder   |  8.6%     |  7.0%    | +$1,849 ↑   |
+| us_equity_broad   | 52.7%     | 55.0%    | +$2,757 ↑   |
+| us_equity_growth  |  5.8%     |  7.0%    | +$1,470 ↑   |
+| intl_equity       | 21.0%     | 22.0%    | +$1,229 ↑   |
+| precious_metals   | 10.9%     |  9.0%    | −$2,252 ↓   |
+| cash_dry_powder   |  8.6%     |  7.0%    | −$1,849 ↓   |
 
 ## Market context
 
