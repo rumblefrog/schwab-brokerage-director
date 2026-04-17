@@ -1,0 +1,25 @@
+{
+  "_comment": "Mimics the shape SnapTrade's get_user_holdings returns. Shape reflects positions[], total_value, and cash balances as SnapTrade presents them. fetch_holdings.py normalizes this into the shape in holdings.json.",
+  "account": {
+    "id": "demo-account-id",
+    "institution_name": "Charles Schwab",
+    "name": "Brokerage",
+    "number": "****1234"
+  },
+  "balances": [
+    {"currency": {"code": "USD"}, "cash": 1357.00, "buying_power": 1357.00}
+  ],
+  "total_value": {"amount": 117256.00, "currency": "USD"},
+  "positions": [
+    {"symbol": {"symbol": "VTI"},   "units": 141.56,  "price": 350.37, "average_purchase_price": 269.95, "open_pnl":  11386.00},
+    {"symbol": {"symbol": "SWPPX"}, "units": 155.31,  "price":  78.15, "average_purchase_price":  67.61, "open_pnl":   1638.00},
+    {"symbol": {"symbol": "QQQM"},  "units": 34.21,   "price": 196.93, "average_purchase_price": 169.54, "open_pnl":    937.00},
+    {"symbol": {"symbol": "VXUS"},  "units": 398.17,  "price":  61.70, "average_purchase_price":  55.00, "open_pnl":   2667.00},
+    {"symbol": {"symbol": "SGOV"},  "units": 99.87,   "price": 100.70, "average_purchase_price": 100.13, "open_pnl":     57.00},
+    {"symbol": {"symbol": "GDX"},   "units": 112.55,  "price":  41.41, "average_purchase_price":  35.09, "open_pnl":    711.00},
+    {"symbol": {"symbol": "WPM"},   "units": 66.43,   "price":  60.00, "average_purchase_price":  46.67, "open_pnl":    886.00},
+    {"symbol": {"symbol": "GLDM"},  "units": 42.51,   "price":  52.01, "average_purchase_price":  42.34, "open_pnl":    411.00},
+    {"symbol": {"symbol": "SIL"},   "units": 53.22,   "price":  36.59, "average_purchase_price":  31.01, "open_pnl":    297.00}
+  ],
+  "as_of": "2026-04-20T22:00:00Z"
+}

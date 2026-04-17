@@ -1,0 +1,60 @@
+# Strategic target allocation.
+#
+# This file is the long-term anchor. It is STICKY. The weekly routine reads
+# this file and must never modify it. To re-derive the allocation, delete
+# this file and manually trigger a one-off routine run that re-derives and
+# commits a new version on a review branch.
+#
+# Rules encoded here:
+#   - frozen_tickers: count toward category weight, never receive new deposits
+#   - primary_ticker: sole buy target when category is underweight
+#   - whitelist:     empty = "only tickers user already holds"
+
+version: 1
+as_of: 2026-04-20
+
+categories:
+  us_equity_broad:
+    target_pct: 55
+    primary_ticker: VTI
+    frozen_tickers: [SWPPX]
+
+  us_equity_growth:
+    target_pct: 7
+    primary_ticker: QQQM
+
+  intl_equity:
+    target_pct: 22
+    primary_ticker: VXUS
+
+  precious_metals:
+    target_pct: 9
+    primary_ticker: GDX
+    frozen_tickers: [WPM]
+    # Informational only — not used by the buy-decision algorithm.
+    components:
+      GDX: 35
+      WPM: 30
+      GLDM: 20
+      SIL: 15
+
+  cash_dry_powder:
+    target_pct: 7
+    primary_ticker: SGOV
+
+drift_tolerance_pct: 2                # within this band, default to us_equity_broad
+rebalance_via_sell_threshold_pct: 10  # never suggest selling below this overshoot
+rebalance_horizon_weeks: 20           # if buying alone can't close the gap within N weeks, flag
+
+whitelist: []                         # empty = "only tickers user already holds"
+
+category_map:
+  VTI:   us_equity_broad
+  SWPPX: us_equity_broad
+  QQQM:  us_equity_growth
+  VXUS:  intl_equity
+  GDX:   precious_metals
+  WPM:   precious_metals
+  GLDM:  precious_metals
+  SIL:   precious_metals
+  SGOV:  cash_dry_powder
