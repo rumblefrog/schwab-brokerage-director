@@ -1,0 +1,37 @@
+{
+  "as_of": "2026-04-20T22:00:00Z",
+  "tickers": {
+    "VTI":   {"price": 350.37, "return_1w": -0.004, "return_1m": -0.004, "return_3m":  0.021, "return_ytd":  0.018, "return_1y":  0.118},
+    "SWPPX": {"price":  78.15, "return_1w": -0.003, "return_1m": -0.003, "return_3m":  0.022, "return_ytd":  0.019, "return_1y":  0.121},
+    "QQQM":  {"price": 196.93, "return_1w":  0.008, "return_1m":  0.011, "return_3m":  0.034, "return_ytd":  0.027, "return_1y":  0.162},
+    "VXUS":  {"price":  61.70, "return_1w":  0.001, "return_1m":  0.009, "return_3m":  0.018, "return_ytd":  0.032, "return_1y":  0.089},
+    "SGOV":  {"price": 100.70, "return_1w":  0.001, "return_1m":  0.004, "return_3m":  0.012, "return_ytd":  0.014, "return_1y":  0.049},
+    "GDX":   {"price":  41.41, "return_1w":  0.006, "return_1m":  0.027, "return_3m":  0.088, "return_ytd":  0.145, "return_1y":  0.298},
+    "WPM":   {"price":  60.00, "return_1w":  0.004, "return_1m":  0.019, "return_3m":  0.071, "return_ytd":  0.112, "return_1y":  0.244},
+    "GLDM":  {"price":  52.01, "return_1w":  0.006, "return_1m":  0.022, "return_3m":  0.061, "return_ytd":  0.098, "return_1y":  0.211},
+    "SIL":   {"price":  36.59, "return_1w":  0.009, "return_1m":  0.031, "return_3m":  0.076, "return_ytd":  0.138, "return_1y":  0.255}
+  },
+  "indices": {
+    "VIX":          {"level": 17.2,  "change_1w":  1.1},
+    "TNX_10y_pct":  {"level":  4.18, "change_1w":  0.02},
+    "SPY":          {"return_1w": -0.003, "return_1m":  0.010},
+    "QQQ":          {"return_1w":  0.008, "return_1m":  0.014},
+    "EFA":          {"return_1w":  0.002, "return_1m":  0.012},
+    "GLD":          {"return_1w":  0.006, "return_1m":  0.022},
+    "UUP":          {"return_1w": -0.002, "return_1m": -0.008}
+  },
+  "sectors": {
+    "XLK":  {"return_1w":  0.018, "return_1m":  0.022},
+    "XLE":  {"return_1w": -0.009, "return_1m": -0.014},
+    "XLF":  {"return_1w":  0.004, "return_1m":  0.008},
+    "XLV":  {"return_1w": -0.002, "return_1m":  0.004},
+    "XLY":  {"return_1w":  0.006, "return_1m":  0.011},
+    "XLP":  {"return_1w":  0.001, "return_1m":  0.003},
+    "XLI":  {"return_1w":  0.002, "return_1m":  0.009},
+    "XLB":  {"return_1w":  0.003, "return_1m":  0.012},
+    "XLRE": {"return_1w": -0.001, "return_1m":  0.005},
+    "XLU":  {"return_1w":  0.000, "return_1m":  0.002},
+    "XLC":  {"return_1w":  0.007, "return_1m":  0.013}
+  },
+  "warnings": []
+}

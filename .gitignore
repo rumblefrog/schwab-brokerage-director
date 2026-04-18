@@ -1,0 +1,18 @@
+.env
+.env.*
+!.env.example
+
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+
+/tmp/*.json
+/build/
+/dist/
+
+# Local fixture-based dry-run output — real weekly recommendations do get committed.
+recommendations/DRY-RUN.md
+
+.DS_Store

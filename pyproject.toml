@@ -1,0 +1,23 @@
+[project]
+name = "schwab-brokerage-director"
+version = "0.1.0"
+description = "Monday portfolio advisor driven by a Claude Code Routine."
+requires-python = ">=3.11"
+dependencies = [
+    "snaptrade-python-sdk>=11.0.0",
+    "yfinance>=0.2.40",
+    "httpx>=0.27.0",
+    "pyyaml>=6.0.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-mock>=3.12.0",
+    "respx>=0.21.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-v"
