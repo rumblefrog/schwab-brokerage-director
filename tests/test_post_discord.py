@@ -294,6 +294,17 @@ def test_main_posts_canonical_fixture(tmp_path, monkeypatch, capsys):
     assert '"color": 3066993' in out  # 0x2ecc71 decimal
 
 
+def test_main_prints_confirmation_on_success(tmp_path, monkeypatch, capsys):
+    # Silent success caused the weekly routine to re-invoke the script
+    # "to check the exit code", double-posting. A visible confirmation
+    # line removes that ambiguity.
+    monkeypatch.setenv("DISCORD_WEBHOOK_URL", "mock://")
+    rc = post_discord.main([str(CANONICAL)])
+    assert rc == 0
+    out = capsys.readouterr().out
+    assert f"Posted {CANONICAL} to Discord." in out
+
+
 def test_main_without_webhook_env_exits_generic(monkeypatch, capsys):
     monkeypatch.delenv("DISCORD_WEBHOOK_URL", raising=False)
     rc = post_discord.main([str(CANONICAL)])
