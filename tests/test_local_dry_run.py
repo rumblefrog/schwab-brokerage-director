@@ -4,6 +4,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from scripts import local_dry_run, post_discord
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -24,10 +26,11 @@ def test_compute_drift_sums_category_values():
     holdings, _, config = _load_fixtures()
     rows = local_dry_run._compute_drift(holdings, config)
     by_cat = {r["category"]: r for r in rows}
-    # VTI + SWPPX = 49596 + 12138 = 61734
-    assert by_cat["us_equity_broad"]["current_usd"] == 61734.0
-    # GDX + WPM + GLDM + SIL = 4661 + 3986 + 2211 + 1947 = 12805
-    assert by_cat["precious_metals"]["current_usd"] == 12805.0
+    # Values derived from holdings.json (normalize() output of holdings_raw.json).
+    # VTI 49598.38 + SWPPX 12137.48 = 61735.86
+    assert by_cat["us_equity_broad"]["current_usd"] == pytest.approx(61735.86, abs=0.01)
+    # GDX 4660.70 + WPM 3985.80 + GLDM 2210.95 + SIL 1947.32 = 12804.77
+    assert by_cat["precious_metals"]["current_usd"] == pytest.approx(12804.77, abs=0.01)
 
 
 def test_compute_drift_positive_means_underweight():

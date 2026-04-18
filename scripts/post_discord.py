@@ -87,7 +87,9 @@ def parse_recommendation(text: str) -> tuple[dict[str, Any], str, dict[str, str]
 def _truncate(s: str, limit: int, suffix: str) -> str:
     if len(s) <= limit:
         return s
-    keep = max(0, limit - len(suffix))
+    keep = limit - len(suffix)
+    if keep <= 0:
+        return suffix[:limit]
     return s[:keep] + suffix
 
 

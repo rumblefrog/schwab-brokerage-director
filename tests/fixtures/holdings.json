@@ -1,16 +1,70 @@
 {
   "as_of": "2026-04-20T22:00:00Z",
-  "total_usd": 117256.00,
-  "cash_usd": 1357.00,
+  "total_usd": 117256.0,
+  "cash_usd": 1357.0,
   "positions": [
-    {"ticker": "VTI",   "shares": 141.56,  "market_value": 49596.00, "cost_basis": 38210.00, "category": "us_equity_broad"},
-    {"ticker": "SWPPX", "shares": 155.31,  "market_value": 12138.00, "cost_basis": 10500.00, "category": "us_equity_broad"},
-    {"ticker": "QQQM",  "shares": 34.21,   "market_value": 6737.00,  "cost_basis": 5800.00,  "category": "us_equity_growth"},
-    {"ticker": "VXUS",  "shares": 398.17,  "market_value": 24567.00, "cost_basis": 21900.00, "category": "intl_equity"},
-    {"ticker": "SGOV",  "shares": 99.87,   "market_value": 10057.00, "cost_basis": 10000.00, "category": "cash_dry_powder"},
-    {"ticker": "GDX",   "shares": 112.55,  "market_value": 4661.00,  "cost_basis": 3950.00,  "category": "precious_metals"},
-    {"ticker": "WPM",   "shares": 66.43,   "market_value": 3986.00,  "cost_basis": 3100.00,  "category": "precious_metals"},
-    {"ticker": "GLDM",  "shares": 42.51,   "market_value": 2211.00,  "cost_basis": 1800.00,  "category": "precious_metals"},
-    {"ticker": "SIL",   "shares": 53.22,   "market_value": 1947.00,  "cost_basis": 1650.00,  "category": "precious_metals"}
+    {
+      "ticker": "VTI",
+      "shares": 141.56,
+      "market_value": 49598.38,
+      "cost_basis": 38214.12,
+      "category": "us_equity_broad"
+    },
+    {
+      "ticker": "SWPPX",
+      "shares": 155.31,
+      "market_value": 12137.48,
+      "cost_basis": 10500.51,
+      "category": "us_equity_broad"
+    },
+    {
+      "ticker": "QQQM",
+      "shares": 34.21,
+      "market_value": 6736.98,
+      "cost_basis": 5799.96,
+      "category": "us_equity_growth"
+    },
+    {
+      "ticker": "VXUS",
+      "shares": 398.17,
+      "market_value": 24567.09,
+      "cost_basis": 21899.35,
+      "category": "intl_equity"
+    },
+    {
+      "ticker": "SGOV",
+      "shares": 99.87,
+      "market_value": 10056.91,
+      "cost_basis": 9999.98,
+      "category": "cash_dry_powder"
+    },
+    {
+      "ticker": "GDX",
+      "shares": 112.55,
+      "market_value": 4660.7,
+      "cost_basis": 3949.38,
+      "category": "precious_metals"
+    },
+    {
+      "ticker": "WPM",
+      "shares": 66.43,
+      "market_value": 3985.8,
+      "cost_basis": 3100.29,
+      "category": "precious_metals"
+    },
+    {
+      "ticker": "GLDM",
+      "shares": 42.51,
+      "market_value": 2210.95,
+      "cost_basis": 1799.87,
+      "category": "precious_metals"
+    },
+    {
+      "ticker": "SIL",
+      "shares": 53.22,
+      "market_value": 1947.32,
+      "cost_basis": 1650.35,
+      "category": "precious_metals"
+    }
   ]
 }

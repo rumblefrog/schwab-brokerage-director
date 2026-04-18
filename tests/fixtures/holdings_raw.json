@@ -1,5 +1,5 @@
 {
-  "_comment": "Mimics the shape SnapTrade's get_user_holdings returns. Shape reflects positions[], total_value, and cash balances as SnapTrade presents them. fetch_holdings.py normalizes this into the shape in holdings.json.",
+  "_comment": "Mimics the shape SnapTrade's get_user_holdings returns (positions[], total_value, balances). tests/fixtures/holdings.json is the deterministic output of fetch_holdings.normalize() applied to this file — regenerate with: uv run python -c \"import json; from scripts import fetch_holdings; raw=json.load(open('tests/fixtures/holdings_raw.json')); print(json.dumps(fetch_holdings.normalize(raw, fetch_holdings.load_category_map()), indent=2))\" > tests/fixtures/holdings.json",
   "account": {
     "id": "demo-account-id",
     "institution_name": "Charles Schwab",

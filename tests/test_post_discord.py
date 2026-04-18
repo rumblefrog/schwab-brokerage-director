@@ -174,6 +174,25 @@ def test_truncation_suffix_references_source_filename():
     assert "2026-04-20.md" in positions["value"]
 
 
+# --- _truncate guarantees --------------------------------------------------
+
+
+def test_truncate_returns_input_when_within_limit():
+    assert post_discord._truncate("abc", 10, "…suffix") == "abc"
+
+
+def test_truncate_clamps_to_limit_even_when_suffix_alone_exceeds_it():
+    # Regression: previously returned the full suffix and could exceed limit.
+    out = post_discord._truncate("some long text", 3, "… (truncated)")
+    assert len(out) <= 3
+
+
+def test_truncate_preserves_prefix_and_appends_suffix_in_normal_case():
+    out = post_discord._truncate("abcdefghij", 7, "..")
+    assert out == "abcde.."
+    assert len(out) == 7
+
+
 # --- POST behavior ---------------------------------------------------------
 
 
