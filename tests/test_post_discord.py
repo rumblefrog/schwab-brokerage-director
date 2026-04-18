@@ -199,42 +199,39 @@ def test_truncate_preserves_prefix_and_appends_suffix_in_normal_case():
 @respx.mock
 def test_post_webhook_success_returns_true():
     route = respx.post(WEBHOOK).mock(return_value=httpx.Response(204))
-    ok = post_discord.post_webhook(
-        WEBHOOK, {"title": "t"}, sleep=lambda _s: None
-    )
+    ok = post_discord.post_webhook(WEBHOOK, {"title": "t"})
     assert ok is True
     assert route.called
 
 
 @respx.mock
-def test_post_webhook_retries_once_on_5xx():
-    responses = [httpx.Response(503), httpx.Response(204)]
-    route = respx.post(WEBHOOK).mock(side_effect=responses)
-    ok = post_discord.post_webhook(WEBHOOK, {"title": "t"}, sleep=lambda _s: None)
-    assert ok is True
-    assert route.call_count == 2
-
-
-@respx.mock
-def test_post_webhook_no_retry_on_4xx():
-    route = respx.post(WEBHOOK).mock(return_value=httpx.Response(404, text="not found"))
-    ok = post_discord.post_webhook(WEBHOOK, {"title": "t"}, sleep=lambda _s: None)
+def test_post_webhook_does_not_retry_on_5xx():
+    # Retries risk duplicating a message Discord already accepted — a single
+    # 5xx is logged and reported as failure, never retried.
+    route = respx.post(WEBHOOK).mock(return_value=httpx.Response(503))
+    ok = post_discord.post_webhook(WEBHOOK, {"title": "t"})
     assert ok is False
     assert route.call_count == 1
 
 
 @respx.mock
-def test_post_webhook_gives_up_after_second_5xx():
-    route = respx.post(WEBHOOK).mock(
-        side_effect=[httpx.Response(500), httpx.Response(503)]
-    )
-    ok = post_discord.post_webhook(WEBHOOK, {"title": "t"}, sleep=lambda _s: None)
+def test_post_webhook_no_retry_on_4xx():
+    route = respx.post(WEBHOOK).mock(return_value=httpx.Response(404, text="not found"))
+    ok = post_discord.post_webhook(WEBHOOK, {"title": "t"})
     assert ok is False
-    assert route.call_count == 2
+    assert route.call_count == 1
+
+
+@respx.mock
+def test_post_webhook_does_not_retry_on_transport_error():
+    route = respx.post(WEBHOOK).mock(side_effect=httpx.ReadTimeout("timed out"))
+    ok = post_discord.post_webhook(WEBHOOK, {"title": "t"})
+    assert ok is False
+    assert route.call_count == 1
 
 
 def test_mock_url_logs_instead_of_posting(capsys):
-    ok = post_discord.post_webhook("mock://", {"title": "t", "color": 1}, sleep=lambda _s: None)
+    ok = post_discord.post_webhook("mock://", {"title": "t", "color": 1})
     assert ok is True
     out = capsys.readouterr().out
     assert "MOCK DISCORD POST" in out
