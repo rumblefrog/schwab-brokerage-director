@@ -26,7 +26,6 @@ import json
 import os
 import re
 import sys
-import time
 from pathlib import Path
 from typing import Any
 
@@ -158,9 +157,12 @@ def post_webhook(
     embed: dict[str, Any],
     *,
     client: httpx.Client | None = None,
-    sleep: "callable" = time.sleep,  # type: ignore[valid-type]
 ) -> bool:
-    """POST the embed. Retry once on 5xx; no retry on 4xx. Return True on success."""
+    """POST the embed once. No retries — Discord webhooks have no idempotency
+    key, so a retry on timeout or 5xx risks duplicating a message Discord
+    already accepted. Per CLAUDE.md §9, a missed post is surfaced by the next
+    weekly run, not by retrying in-process.
+    """
     payload = {"embeds": [embed]}
 
     if url.startswith("mock://"):
@@ -174,26 +176,16 @@ def post_webhook(
         client = httpx.Client(timeout=10.0)
 
     try:
-        for attempt in range(2):
-            try:
-                resp = client.post(url, json=payload)
-            except httpx.RequestError as exc:
-                print(f"Discord transport error (attempt {attempt + 1}): {exc}", file=sys.stderr)
-                if attempt == 0:
-                    sleep(2)
-                    continue
-                return False
-
-            if 200 <= resp.status_code < 300:
-                return True
-            if 500 <= resp.status_code < 600 and attempt == 0:
-                print(f"Discord 5xx (attempt 1): {resp.status_code}; retrying", file=sys.stderr)
-                sleep(2)
-                continue
-            # 4xx or second 5xx: log and give up.
-            body = (resp.text or "")[:500]
-            print(f"Discord rejected {resp.status_code}: {body}", file=sys.stderr)
+        try:
+            resp = client.post(url, json=payload)
+        except httpx.RequestError as exc:
+            print(f"Discord transport error: {exc}", file=sys.stderr)
             return False
+
+        if 200 <= resp.status_code < 300:
+            return True
+        body = (resp.text or "")[:500]
+        print(f"Discord rejected {resp.status_code}: {body}", file=sys.stderr)
         return False
     finally:
         if owns_client:

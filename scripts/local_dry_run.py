@@ -200,7 +200,7 @@ def main() -> int:
     print("\n== Step 4: post_discord.py (mock webhook) ==")
     fm, headline, sections = post_discord.parse_recommendation(md)
     embed = post_discord.build_embed(fm, headline, sections, OUT_PATH.name)
-    post_discord.post_webhook("mock://local-dry-run", embed, sleep=lambda _s: None)
+    post_discord.post_webhook("mock://local-dry-run", embed)
 
     print("\n== DRY-RUN complete ==")
     return 0
