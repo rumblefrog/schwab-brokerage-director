@@ -192,9 +192,13 @@ Populate the frontmatter `share_estimate` and `price_used` keys accordingly.
   re-authorize Schwab."* Post the red alert to Discord. Commit the alert file.
 - **Market data partial failure**: proceed with whatever indicators worked.
   Note each missing indicator as a bullet in `## Caveats`.
-- **Discord failure** (any 4xx): log locally, do not retry in a loop, let the
-  next run surface that last week's post was never delivered (compare the most
-  recent `recommendations/*.md` mtime to the webhook's delivery).
+- **Discord failure** (any non-2xx, or a transport error such as a timeout):
+  log locally, **do not retry**. Discord webhooks have no idempotency key —
+  a retry after a 5xx or a mid-flight timeout can post the same embed twice
+  because the first request may have already been accepted server-side. Let
+  the next weekly run surface that last week's post was never delivered
+  (compare the most recent `recommendations/*.md` mtime to the webhook's
+  delivery).
 - **Any other unrecoverable error**: produce a `kind: alert` recommendation
   with the error message in `## Reasoning`. Do not silently fail.
 
