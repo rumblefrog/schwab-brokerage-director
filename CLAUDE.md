@@ -77,6 +77,11 @@ and note the gap in `## Caveats`. For unrecoverable failures, see §9.
    ```
    python scripts/post_discord.py recommendations/YYYY-MM-DD.md
    ```
+   Invoke this command **exactly once** per run. The webhook has no
+   idempotency key, so a second invocation — even "just to re-check the
+   exit code" — posts the same embed twice. On success the script prints
+   `Posted <path> to Discord.`; treat that line (or an exit of 0) as
+   definitive. If the post truly failed, see §9 — do not re-run.
 
 8. **Commit.** Create a branch `claude/recommendation-YYYY-MM-DD`, commit
    `recommendations/YYYY-MM-DD.md`, and push. Do not merge to main — the user

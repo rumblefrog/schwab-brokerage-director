@@ -267,6 +267,11 @@ def main(argv: list[str] | None = None) -> int:
     embed = build_embed(fm, headline, sections, source_filename=path.name)
 
     ok = post_webhook(url, embed)
+    if ok:
+        # Visible confirmation on stdout. Silent success invites callers
+        # (including the weekly routine) to re-invoke "just to check" —
+        # which double-posts, since the webhook has no idempotency key.
+        print(f"Posted {path} to Discord.")
     return EXIT_OK if ok else EXIT_GENERIC
 
 
