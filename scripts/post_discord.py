@@ -61,6 +61,61 @@ FIELD_ORDER = ["Caveats", "Market context", "Drift", "Positions"]
 FRONTMATTER_RE = re.compile(r"\A---\n(.*?)\n---\n", re.DOTALL)
 HEADLINE_RE = re.compile(r"^#\s+(.+?)\s*$", re.MULTILINE)
 SECTION_SPLIT_RE = re.compile(r"(?m)^##\s+(.+?)\s*$")
+TABLE_ROW_RE = re.compile(r"^\s*\|.*\|\s*$")
+
+
+def _parse_row(line: str) -> list[str]:
+    s = line.strip()
+    if s.startswith("|"):
+        s = s[1:]
+    if s.endswith("|"):
+        s = s[:-1]
+    return [c.strip() for c in s.split("|")]
+
+
+def _is_separator_row(cells: list[str]) -> bool:
+    return bool(cells) and all(c and set(c) <= set("-:") for c in cells)
+
+
+def _format_table(raw_rows: list[str]) -> str:
+    """Render a markdown table as a padded, code-fenced block for monospace display."""
+    parsed = [_parse_row(r) for r in raw_rows]
+    data = [r for r in parsed if not _is_separator_row(r)]
+    if not data:
+        return "\n".join(raw_rows)
+
+    n_cols = max(len(r) for r in data)
+    for r in data:
+        while len(r) < n_cols:
+            r.append("")
+    widths = [max(len(r[i]) for r in data) for i in range(n_cols)]
+
+    def fmt(cells: list[str]) -> str:
+        return "| " + " | ".join(cells[i].ljust(widths[i]) for i in range(n_cols)) + " |"
+
+    sep = "|-" + "-|-".join("-" * widths[i] for i in range(n_cols)) + "-|"
+    lines = ["```", fmt(data[0]), sep]
+    lines.extend(fmt(r) for r in data[1:])
+    lines.append("```")
+    return "\n".join(lines)
+
+
+def _reflow_tables(text: str) -> str:
+    """Find contiguous markdown table regions and render them in aligned code fences."""
+    lines = text.split("\n")
+    out: list[str] = []
+    i = 0
+    while i < len(lines):
+        if TABLE_ROW_RE.match(lines[i]):
+            j = i
+            while j < len(lines) and TABLE_ROW_RE.match(lines[j]):
+                j += 1
+            out.append(_format_table(lines[i:j]))
+            i = j
+        else:
+            out.append(lines[i])
+            i += 1
+    return "\n".join(out)
 
 
 def parse_recommendation(text: str) -> tuple[dict[str, Any], str, dict[str, str]]:
@@ -125,7 +180,7 @@ def build_embed(
         value = sections.get(name, "").strip()
         if not value:
             continue
-        embed["fields"].append({"name": name, "value": value, "inline": False})
+        embed["fields"].append({"name": name, "value": _reflow_tables(value), "inline": False})
 
     # Step 1: per-field and description hard limits.
     embed["description"] = _truncate(embed["description"], LIMITS["description"], suffix)
