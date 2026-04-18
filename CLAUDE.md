@@ -55,10 +55,13 @@ and note the gap in `## Caveats`. For unrecoverable failures, see §9.
 3. **Read the target.** Load `config/target_allocation.yaml`. This is the
    strategic anchor. **You do not modify it.** See §4.
 
-4. **(Optional) News scan.** You may use `web_search` to surface **2–3 news
-   items** relevant to held asset classes from the past week. News may inform
-   the reasoning paragraph only. News never changes the decision — the decision
-   comes from §7.
+4. **News scan.** Use `web_search` to surface 2–3 news items relevant to held
+   asset classes from the past week. Prefer broad market headlines over
+   single-ticker noise. News may inform the reasoning paragraph only. News
+   never changes the decision — the decision comes from §7. If the search
+   returns nothing notable, or yields only stale/irrelevant content, omit news
+   from the reasoning paragraph silently — do not caveat its absence. Only
+   mention news in `## Caveats` if `web_search` itself failed as a tool call.
 
 5. **Decide.** Apply the decision algorithm in §7 to produce one of:
    - a BUY recommendation (the 99% case), or
@@ -80,9 +83,11 @@ and note the gap in `## Caveats`. For unrecoverable failures, see §9.
    merges after reading the Discord post.
 
 **Runtime assumption:** the `cash_usd` field reflects whatever is settled at
-the moment the routine runs. If this week's ACH deposit has not cleared yet,
-deploy whatever is present. Do not try to "add $500" to what SnapTrade
-reports. Note any anomaly in `## Caveats`.
+the moment the routine runs. Always deploy against what SnapTrade reports —
+never mentally "add" this week's $500 to the reported cash. Only add an
+ACH-timing caveat to `## Caveats` when `cash_usd < 500` (which means this
+week's deposit genuinely hasn't cleared and the recommendation amount must be
+reduced). In all other cases, proceed silently.
 
 ---
 
@@ -225,7 +230,12 @@ be omitted.
    chosen category's 1-month lag, the drift in dollars, and any 1–2 news items
    that are genuinely relevant. No jargon stuffing.
 3. `## Positions` — markdown table: Ticker | Category | Market Value | Weight.
-4. `## Drift` — markdown table: Category | Current % | Target % | Drift $.
+4. `## Drift` — markdown table: Category | Current % | Target % | Gap to
+   target. Prefix the table with a one-line legend:
+   *"Gap to target = dollars needed to reach target (positive = buy, negative
+   = overweight)"*. The `Gap to target` column uses an explicit `+`/`−` sign
+   (e.g. `+$2,656`, `−$2,191`). Do **not** add ↑/↓ arrows — the sign alone is
+   unambiguous.
 5. `## Market context` — 3–5 bullets: VIX level and 1w change, 10y yield,
    notable sector moves, any held-ticker outliers.
 6. `## Caveats` — warnings, stale data flags, strategic_note suggestions,

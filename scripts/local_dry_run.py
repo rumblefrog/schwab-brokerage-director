@@ -142,10 +142,14 @@ def _render(
         positions += f"| Cash | — | ${holdings['cash_usd']:,.0f} | {cash_pct:.1f}% |\n"
     positions += "\n"
 
-    drift = "## Drift\n\n| Category | Current % | Target % | Drift $ |\n|---|---|---|---|\n"
+    drift = (
+        "## Drift\n\n"
+        "Gap to target = dollars needed to reach target "
+        "(positive = buy, negative = overweight)\n\n"
+        "| Category | Current % | Target % | Gap to target |\n|---|---|---|---|\n"
+    )
     for r in drift_rows:
-        arrow = "↑" if r["drift_usd"] > 0 else ("↓" if r["drift_usd"] < 0 else "·")
-        drift += f"| {r['category']} | {r['current_pct']}% | {r['target_pct']}% | {_format_money(r['drift_usd'])} {arrow} |\n"
+        drift += f"| {r['category']} | {r['current_pct']}% | {r['target_pct']}% | {_format_money(r['drift_usd'])} |\n"
     drift += "\n"
 
     vix = market["indices"].get("VIX", {})
