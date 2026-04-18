@@ -40,14 +40,14 @@ and note the gap in `## Caveats`. For unrecoverable failures, see §9.
 
 1. **Fetch holdings.**
    ```
-   python scripts/fetch_holdings.py
+   uv run python scripts/fetch_holdings.py
    ```
    Output: `{as_of, total_usd, cash_usd, positions:[{ticker, shares,
    market_value, cost_basis, category}]}` on stdout + `/tmp/holdings.json`.
 
 2. **Fetch market context.**
    ```
-   python scripts/market_context.py
+   uv run python scripts/market_context.py
    ```
    Output: per-ticker 1w/1m/3m/YTD/1y returns, VIX, 10y yield, index proxies,
    SPDR sector ETFs, on stdout + `/tmp/market_context.json`.
@@ -75,7 +75,7 @@ and note the gap in `## Caveats`. For unrecoverable failures, see §9.
 
 7. **Post to Discord.**
    ```
-   python scripts/post_discord.py recommendations/YYYY-MM-DD.md
+   uv run python scripts/post_discord.py recommendations/YYYY-MM-DD.md
    ```
    Invoke this command **exactly once** per run. The webhook has no
    idempotency key, so a second invocation — even "just to re-check the
@@ -193,7 +193,7 @@ Populate the frontmatter `share_estimate` and `price_used` keys accordingly.
 - **SnapTrade auth failure** (`fetch_holdings.py` exits 2): skip the advisory
   step. Produce a recommendation file with `kind: alert`, headline
   `Schwab connection needs re-linking`, and instructions:
-  *"Run `python scripts/relink_snaptrade.py` locally, visit the printed URL,
+  *"Run `uv run python scripts/relink_snaptrade.py` locally, visit the printed URL,
   re-authorize Schwab."* Post the red alert to Discord. Commit the alert file.
 - **Market data partial failure**: proceed with whatever indicators worked.
   Note each missing indicator as a bullet in `## Caveats`.
