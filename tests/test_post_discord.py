@@ -101,6 +101,46 @@ def test_embed_footer_carries_disclaimer():
     assert "Not financial advice" in embed["footer"]["text"]
 
 
+# --- Table reflow (Discord monospace alignment) ---------------------------
+
+
+def test_tables_are_wrapped_in_code_fences_for_monospace_alignment():
+    fm, headline, sections = post_discord.parse_recommendation(CANONICAL.read_text())
+    embed = post_discord.build_embed(fm, headline, sections, "2026-04-20.md")
+    for name in ("Positions", "Drift"):
+        field = next(f for f in embed["fields"] if f["name"] == name)
+        assert field["value"].count("```") >= 2, f"{name} missing code fences"
+
+
+def test_reflow_pads_columns_to_equal_width():
+    md = (
+        "| A | Bee | C |\n"
+        "|---|-----|---|\n"
+        "| 1 | 22  | 333 |\n"
+        "| longlong | y | z |\n"
+    )
+    out = post_discord._reflow_tables(md)
+    body = [l for l in out.split("\n") if l.startswith("|")]
+    # Every table line in the reflowed block has the same length.
+    assert len({len(l) for l in body}) == 1
+
+
+def test_reflow_preserves_non_table_text():
+    md = (
+        "Legend line here.\n"
+        "\n"
+        "| A | B |\n"
+        "|---|---|\n"
+        "| 1 | 2 |\n"
+        "\n"
+        "Trailing note.\n"
+    )
+    out = post_discord._reflow_tables(md)
+    assert "Legend line here." in out
+    assert "Trailing note." in out
+    assert "```" in out
+
+
 # --- Truncation ------------------------------------------------------------
 
 

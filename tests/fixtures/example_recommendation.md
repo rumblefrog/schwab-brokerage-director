@@ -38,13 +38,15 @@ $500.00 (~1.43 shares of VTI at $350.37).
 
 ## Drift
 
-| Category          | Current % | Target % | Drift $     |
-|-------------------|-----------|----------|-------------|
-| us_equity_broad   | 52.7%     | 55.0%    | +$2,757 ↑   |
-| us_equity_growth  |  5.8%     |  7.0%    | +$1,470 ↑   |
-| intl_equity       | 21.0%     | 22.0%    | +$1,229 ↑   |
-| precious_metals   | 10.9%     |  9.0%    | −$2,252 ↓   |
-| cash_dry_powder   |  8.6%     |  7.0%    | −$1,849 ↓   |
+Gap to target = dollars needed to reach target (positive = buy, negative = overweight)
+
+| Category          | Current % | Target % | Gap to target |
+|-------------------|-----------|----------|---------------|
+| us_equity_broad   | 52.7%     | 55.0%    | +$2,757       |
+| us_equity_growth  |  5.8%     |  7.0%    | +$1,470       |
+| intl_equity       | 21.0%     | 22.0%    | +$1,229       |
+| precious_metals   | 10.9%     |  9.0%    | −$2,252       |
+| cash_dry_powder   |  8.6%     |  7.0%    | −$1,849       |
 
 ## Market context
 
@@ -58,7 +60,6 @@ $500.00 (~1.43 shares of VTI at $350.37).
 
 - Precious metals sleeve is 1.9% over target. Well inside the 10% sell-threshold, so
   we let it drift down naturally rather than sell and realize gains.
-- No news items surfaced this week that warrant deviating from the mechanical choice.
 
 ## Disclaimer
 
