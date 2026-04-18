@@ -81,16 +81,26 @@ def normalize(raw: Any, category_map: dict[str, str]) -> dict[str, Any]:
 
     for acct in accounts:
         total_value = acct.get("total_value") or {}
-        total_usd += float(total_value.get("amount") or 0)
+        total_usd += float(total_value.get("amount") or total_value.get("value") or 0)
 
         for bal in acct.get("balances") or []:
             cash_usd += float(bal.get("cash") or 0)
 
-        as_of = acct.get("as_of") or as_of
+        sync = ((acct.get("account") or {}).get("sync_status") or {}).get("holdings") or {}
+        as_of = acct.get("as_of") or sync.get("last_successful_sync") or as_of
 
         for pos in acct.get("positions") or []:
             symbol = pos.get("symbol") or {}
-            ticker = symbol.get("symbol") if isinstance(symbol, dict) else str(symbol)
+            # Live SnapTrade nests the universal symbol: pos.symbol.symbol.symbol == "VTI".
+            # The test fixture uses the simpler pos.symbol.symbol == "VTI". Handle both.
+            if isinstance(symbol, dict):
+                inner = symbol.get("symbol")
+                if isinstance(inner, dict):
+                    ticker = inner.get("symbol") or inner.get("raw_symbol")
+                else:
+                    ticker = inner
+            else:
+                ticker = str(symbol)
             if not ticker:
                 continue
             units = float(pos.get("units") or 0)
@@ -121,11 +131,17 @@ def fetch_from_snaptrade() -> Any:
         raise AuthFailure(f"Missing SnapTrade env vars: {', '.join(missing)}")
 
     from snaptrade_client import SnapTrade  # lazy — tests don't need the SDK
+    from snaptrade_client.configuration import Configuration
 
-    client = SnapTrade(
+    cfg = Configuration(
         client_id=os.environ["SNAPTRADE_CLIENT_ID"],
         consumer_key=os.environ["SNAPTRADE_CONSUMER_KEY"],
     )
+    # Honor system CA bundle (the SDK ignores REQUESTS_CA_BUNDLE/SSL_CERT_FILE).
+    ca_bundle = os.environ.get("REQUESTS_CA_BUNDLE") or os.environ.get("SSL_CERT_FILE")
+    if ca_bundle:
+        cfg.ssl_ca_cert = ca_bundle
+    client = SnapTrade(configuration=cfg)
     try:
         response = client.account_information.get_all_user_holdings(
             user_id=os.environ["SNAPTRADE_USER_ID"],
