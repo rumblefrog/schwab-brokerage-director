@@ -83,9 +83,9 @@ and note the gap in `## Caveats`. For unrecoverable failures, see §9.
    `Posted <path> to Discord.`; treat that line (or an exit of 0) as
    definitive. If the post truly failed, see §9 — do not re-run.
 
-8. **Commit.** Create a branch `claude/recommendation-YYYY-MM-DD`, commit
-   `recommendations/YYYY-MM-DD.md`, and push. Do not merge to main — the user
-   merges after reading the Discord post.
+8. **Commit, PR, and merge.** Create a branch
+   `claude/recommendation-YYYY-MM-DD`, commit `recommendations/YYYY-MM-DD.md`,
+   push, open a pull request against `main`, and merge it automatically.
 
 **Runtime assumption:** the `cash_usd` field reflects whatever is settled at
 the moment the routine runs. Always deploy against what SnapTrade reports —
@@ -261,7 +261,10 @@ Headline → reasoning → tables → caveats → disclaimer. Readable on a phon
 - Branch: `claude/recommendation-YYYY-MM-DD`.
 - Commit message: `recommendation: YYYY-MM-DD — $500 → TICKER (category)`.
 - One commit per run. Do not rebase or force-push.
-- Do not merge the branch; the user merges after reading the Discord post.
+- Open a pull request against `main` with a title matching the commit message
+  and the recommendation body as the PR description.
+- Merge the PR automatically after opening it. The user reads the Discord
+  post after merge; no manual merge step is required.
 
 ---
 
